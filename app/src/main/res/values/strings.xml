@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Hirou</string>
+
+    <string name="error_empty_billing_name">Name is required</string>
+    <string name="error_empty_phone">A phone number is required</string>
+    <string name="error_empty_email">An email is required</string>
+    <string name="sub_total">Sub Total:</string>
+    <string name="tax">Tax:</string>
+    <string name="total">Total:</string>
+    <string name="save_ip">ip</string>
+</resources>

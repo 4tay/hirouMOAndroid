@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_dark_background"
+    android:id="@+id/ll_item_detail_wrap">
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/close_button"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="Close window"
+        android:id="@+id/iv_item_detail_close"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Blueberry Roll"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_title_size"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:id="@+id/tv_item_detail_title"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/textColor">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_frag_image"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_item_detail_description"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_sub_head_size"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id imperdiet turpis, non facilisis velit. Aenean eleifend mi sit amet augue rhoncus, a varius odio sodales. In eget quam eget justo elementum semper. Pellentesque eget magna elit. Nulla vitae justo felis. Nam in tortor vitae nulla mollis fringilla. Nullam sit amet velit eu tellus auctor molestie at eu ligula. Nunc tortor ipsum, rutrum eu scelerisque a, varius et libero. In laoreet auctor tortor et scelerisque. Nullam velit tortor, vestibulum vel varius vestibulum, pretium eget ligula. Aliquam non tincidunt orci. Cras id nunc massa. Proin sed ex erat. Aliquam erat volutpat. Nullam eu lorem eleifend libero interdum iaculis."/>
+    </ScrollView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/tv_item_detail_price"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/text_sub_head_size"
+            tools:text="$13.98"/>
+    </LinearLayout>
+
+</LinearLayout>

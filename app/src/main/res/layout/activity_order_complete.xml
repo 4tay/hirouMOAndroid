@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_order_complete"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlehouse_design.jsonparsing.OrderComplete">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Submitted"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_dark_background"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/text_sub_head_size"
+                android:text="Pickup Time:"
+                android:textAlignment="center"
+                android:id="@+id/tv_complete_order_title"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="@dimen/text_sub_head_size"
+                tools:text="12:45 pm"
+                android:textAlignment="center"
+                android:id="@+id/tv_complete_order_pickup"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="24sp"
+            android:text="Total:"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="24sp"
+            tools:text="25.89"
+            android:textAlignment="center"
+            android:id="@+id/tv_complete_order_total"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="36dp"
+        android:textSize="@dimen/text_sub_head_size"
+        android:text="Order again?"
+        android:id="@+id/tv_complete_order_again"
+        android:textAlignment="center"/>
+</LinearLayout>
