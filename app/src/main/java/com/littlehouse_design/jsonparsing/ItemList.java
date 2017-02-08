@@ -83,8 +83,15 @@ public class ItemList extends AppCompatActivity implements LoaderManager.LoaderC
         aBar.setDisplayShowTitleEnabled(false);
         aBar.setDisplayHomeAsUpEnabled(true);
 
-        new CartBuilder().execute();
+
+        //Moved CartBuilder to onResume() so that when navigating back the cart is updated to current status.
+        //new CartBuilder().execute();
         getLoaderManager().initLoader(3,null,this).forceLoad();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CartBuilder().execute();
     }
 
     @Override

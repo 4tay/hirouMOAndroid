@@ -1,8 +1,6 @@
 package com.littlehouse_design.jsonparsing.Utils.Cart;
 
-import android.content.ContentProvider;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.util.ArrayList;
 
