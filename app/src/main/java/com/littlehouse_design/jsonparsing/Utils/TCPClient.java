@@ -148,8 +148,8 @@ public class TCPClient {
 
 
             try {
-                //Set my timeout to 10 seconds
-                socket.connect(new InetSocketAddress(serverAddr, serverPort),10000);
+                //Set my timeout to 5 (it was 10) seconds
+                socket.connect(new InetSocketAddress(serverAddr, serverPort),5000);
 
                 //send the message to the server
                 out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);

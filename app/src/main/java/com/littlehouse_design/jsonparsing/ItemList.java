@@ -331,45 +331,52 @@ public class ItemList extends AppCompatActivity implements LoaderManager.LoaderC
 
 
                 // Create the Snackbar
-                Snackbar snackbar = Snackbar.make(getCurrentFocus(), "", Snackbar.LENGTH_INDEFINITE);
-                // Get the Snackbar's layout view
-                Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-                // Hide the text
-                TextView textView = (TextView) layout.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setVisibility(View.INVISIBLE);
+                if (getCurrentFocus() != null) {
+                    Snackbar snackbar = Snackbar.make(getCurrentFocus(), "", Snackbar.LENGTH_INDEFINITE);
+                    // Get the Snackbar's layout view
+                    Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    // Hide the text
+                    TextView textView = (TextView) layout.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setVisibility(View.INVISIBLE);
 
-                // Inflate our custom view
-                View snackView = snackbar.getView().inflate(getApplicationContext(), R.layout.snackbar_cart, null);
-                TextView textViewTop = (TextView) snackView.findViewById(R.id.tv_sub_total);
-                float subDisplay = (float) newSub / 100;
+                    // Inflate our custom view
+                    View snackView = snackbar.getView().inflate(getApplicationContext(), R.layout.snackbar_cart, null);
+                    TextView textViewTop = (TextView) snackView.findViewById(R.id.tv_sub_total);
+                    float subDisplay = (float) newSub / 100;
 
-                final String stringTotal = "$" + String.format(Locale.US, "%.2f", subDisplay);
-                if (stringTotal.length() > 6) {
-                    textViewTop.setTextSize(24);
-                }
-                textViewTop.setText(stringTotal);
-                TextView cartCount = (TextView) snackView.findViewById(R.id.tv_cart_count);
-                if (orderItems.size() > 0) {
-                    cartCount.setText(Integer.toString(orderItems.size()));
-                }
-                textViewTop.setTextColor(Color.WHITE);
-
-                RelativeLayout cartWrapper = (RelativeLayout) snackView.findViewById(R.id.rl_cart_wraper);
-                cartWrapper.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setClass(getApplicationContext(), CartScreen.class);
-                        startActivity(intent);
+                    final String stringTotal = "$" + String.format(Locale.US, "%.2f", subDisplay);
+                    if (stringTotal.length() > 6) {
+                        textViewTop.setTextSize(24);
                     }
-                });
+                    textViewTop.setText(stringTotal);
+                    TextView cartCount = (TextView) snackView.findViewById(R.id.tv_cart_count);
+                    if (orderItems.size() > 0) {
+                        cartCount.setText(Integer.toString(orderItems.size()));
+                    }
+                    textViewTop.setTextColor(Color.WHITE);
 
-                // Add the view to the Snackbar's layout
-                layout.addView(snackView, 0);
-                RelativeLayout myLayout = (RelativeLayout) findViewById(R.id.activity_catalog_list);
-                myLayout.setPadding(0,0,0,160);
-                // Show the Snackbar
-                snackbar.show();
+                    RelativeLayout cartWrapper = (RelativeLayout) snackView.findViewById(R.id.rl_cart_wraper);
+                    cartWrapper.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent();
+                            intent.setClass(getApplicationContext(), CartScreen.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    // Add the view to the Snackbar's layout
+                    layout.addView(snackView, 0);
+                    RelativeLayout myLayout = (RelativeLayout) findViewById(R.id.activity_catalog_list);
+                    myLayout.setPadding(0, 0, 0, 160);
+                    // Show the Snackbar
+                    snackbar.show();
+                }
+            }
+            else {
+
+                Log.d(LOG_TAG,"My current focus was null..");
+                //showCart();
             }
         }
         else {

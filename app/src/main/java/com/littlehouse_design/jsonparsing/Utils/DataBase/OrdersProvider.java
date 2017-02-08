@@ -128,7 +128,28 @@ public class OrdersProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        throw new UnsupportedOperationException("Haven't deved this featured yet");
+        db = ordersDBHelper.getWritableDatabase();
+        int id;
+        switch (uriMatcher.match(uri)) {
+            case ORDER_ITEMS_TABLE:
+                id = db.delete(DatabaseContract.TABLE_ORDER_ITEMS, selection, selectionArgs);
+                db.close();
+                Log.d(LOG_TAG, "I deleted an item??");
+                break;
+            case PREFERENCES_TABLE:
+                id = db.delete(DatabaseContract.TABLE_PREFERENCES, selection, selectionArgs);
+                db.close();
+                Log.d(LOG_TAG, "I inserted a pref! why did I have to do this?");
+                break;
+            default:
+                id = db.delete(DatabaseContract.TABLE_ORDERS, selection, selectionArgs);
+                db.close();
+                Log.d(LOG_TAG, "I inserted an order!");
+                break;
+        }
+        return id;
+
+
     }
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {

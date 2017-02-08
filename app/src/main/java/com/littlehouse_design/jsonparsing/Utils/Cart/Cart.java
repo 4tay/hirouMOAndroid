@@ -72,4 +72,8 @@ public class Cart {
     public int getOrderItemsCount() {
         return orderItems.size();
     }
+
+    public void removeOrderItem(int i) {
+        orderItems.remove(i);
+    }
 }

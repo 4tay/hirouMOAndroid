@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -90,7 +92,13 @@ public class CartScreen extends AppCompatActivity {
     private String paymentResponse;
     private String stringTotal;
 
+/*TODO
+Break ALL of these AsyncTasks up and into LoaderManagers....
 
+Found issues with how network requests and inserts are spooled when they are all wrapped in AsyncTasks
+
+
+ */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +228,7 @@ public class CartScreen extends AppCompatActivity {
         });
 
 
-        new CartBuilder().execute();
+        new cartBuilder().execute();
         Log.d(LOG_TAG,"Getting token...");
         new getToken().execute("");
 
@@ -299,7 +307,7 @@ public class CartScreen extends AppCompatActivity {
             return root;
         }
     }
-    private class CartBuilder extends AsyncTask<Void,Void,Void> {
+    private class cartBuilder extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void...voidOb) {
             orderCursor = getContentResolver().query(DatabaseContract.ORDER_URI,
@@ -354,9 +362,9 @@ public class CartScreen extends AppCompatActivity {
                     else if(itemList.get(i).getItemNumb().equals(itemList.get(j).getItemNumb())) {
                         itemList.get(i).setQuantity(itemList.get(i).getQuantity() + itemList.get(j).getQuantity());
                         itemList.remove(j);
-                        Log.d(LOG_TAG,"added a qty to an item: " +
+                        /*Log.d(LOG_TAG,"added a qty to an item: " +
                                 itemList.get(i).getItemNumb() + " Qty: " +
-                                Integer.toString(itemList.get(i).getQuantity()));
+                                Integer.toString(itemList.get(i).getQuantity()));*/
                         i = 0;
                     }
                 }
@@ -475,7 +483,7 @@ public class CartScreen extends AppCompatActivity {
 
 
         final RecyclerView cartItemView = (RecyclerView) findViewById(R.id.rv_cart_item_list);
-        CartRecyclerAdapter cartRecyclerAdapter = new CartRecyclerAdapter() {
+        final CartRecyclerAdapter cartRecyclerAdapter = new CartRecyclerAdapter() {
             @Override
             public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -503,6 +511,56 @@ public class CartScreen extends AppCompatActivity {
                 }
             }
         };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.LEFT) {
+                    public boolean onMove(RecyclerView recyclerView,
+                                          RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        // move item in `fromPos` to `toPos` in adapter.
+                        return true;// true if moved, false otherwise
+                    }
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        // remove from adapter
+                        Log.d(LOG_TAG, "Completed!!!");
+                        int position = viewHolder.getAdapterPosition();
+                        int orderItemID = cart.getOrderItems().get(position).getId();
+                        cart.removeOrderItem(position);
+                        cartRecyclerAdapter.notifyItemRemoved(position);
+                        cartRecyclerAdapter.notifyItemRangeChanged(position, cart.getOrderItemsCount());
+                        getContentResolver().delete(DatabaseContract.ORDER_ITEM_URI, "CAST (" + DatabaseContract.TableOrderItems.COL_ID + " AS TEXT) = ?", new String[]{Integer.toString(orderItemID)});
+                        new cartBuilder().execute();
+                    }
+                   @Override
+                    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                        if (viewHolder instanceof CartRecyclerAdapter.ItemHolder) {
+                            int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                            Log.d(LOG_TAG,"Recording swipe....");
+                            return makeMovementFlags(0, swipeFlags);
+                        } else
+                            return 0;
+                    }
+
+                    @Override
+                    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                        getDefaultUIUtil().clearView(((CartRecyclerAdapter.ItemHolder) viewHolder).getSwipableView());
+                    }
+                    @Override
+                    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                        if (viewHolder != null) {
+                            getDefaultUIUtil().onSelected(((CartRecyclerAdapter.ItemHolder) viewHolder).getSwipableView());
+                            Log.d(LOG_TAG,"Removing????");
+                        }
+                    }
+                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        getDefaultUIUtil().onDraw(c, recyclerView, ((CartRecyclerAdapter.ItemHolder) viewHolder).getSwipableView(), dX, dY,    actionState, isCurrentlyActive);
+                    }
+                    public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        getDefaultUIUtil().onDrawOver(c, recyclerView, ((CartRecyclerAdapter.ItemHolder) viewHolder).getSwipableView(), dX, dY,    actionState, isCurrentlyActive);
+                    }
+                });
+        itemTouchHelper.attachToRecyclerView(cartItemView);
         cartItemView.setAdapter(cartRecyclerAdapter);
         cartItemView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -743,4 +801,5 @@ public class CartScreen extends AppCompatActivity {
 
         }
     }
+
 }
