@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public abstract class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyc
         public TextView itemPrice;
         public TextView itemTitle;
         public ImageView itemAdd;
+        public LinearLayout fullWrap;
 
 
         public ItemHolder(View view) {
@@ -35,6 +37,7 @@ public abstract class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyc
             itemPrice = (TextView) view.findViewById(R.id.tv_item_price);
             itemTitle = (TextView) view.findViewById(R.id.tv_item_title);
             itemAdd = (ImageView) view.findViewById(R.id.iv_add_item);
+            fullWrap = (LinearLayout) view.findViewById(R.id.ll_item_wrapper);
         }
         @Override
         public void onClick(View view) {

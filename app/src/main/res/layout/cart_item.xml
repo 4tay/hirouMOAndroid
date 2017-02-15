@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:backgroundTint="@color/cardview_light_background"
+    android:background="@color/listItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/ll_cart_item_wrap">
@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             tools:text="Ninja Roll"
             android:textSize="24sp"
+                android:textColor="@color/textColor"
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center_vertical"
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             tools:text="This is my description of some stuff....
             potentially some modifiers???"
+            android:textColor="@color/textColor"
             android:id="@+id/tv_cart_item_description"
             />
     </LinearLayout>
@@ -48,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="1x"
+            android:textColor="@color/textColor"
             android:id="@+id/tv_cart_item_qty"
             android:layout_alignParentEnd="true" />
         <TextView
@@ -55,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="end"
+            android:textColor="@color/textColor"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             tools:text="$7.99"

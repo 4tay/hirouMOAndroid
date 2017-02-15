@@ -56,6 +56,7 @@
         <activity
             android:name=".CartScreen"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".ItemList"
             android:screenOrientation="portrait" />
         <activity

@@ -4,11 +4,13 @@
     android:id="@+id/activity_schedule_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context="com.littlehouse_design.jsonparsing.ScheduleScreen">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_schedule_list"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"/>
 </RelativeLayout>

@@ -37,8 +37,8 @@ public class Cart {
         }
         order.setSubTotal(subTotal);
 
-        itemCursor.close();
-        orderCursor.close();
+        //itemCursor.close();
+        //orderCursor.close();
 
 
     }

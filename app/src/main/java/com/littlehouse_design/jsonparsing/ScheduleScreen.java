@@ -17,8 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.littlehouse_design.jsonparsing.Utils.Adapters.CatRecyclerAdapter;
+import com.littlehouse_design.jsonparsing.Utils.Adapters.ScheduleRecyclerAdapter;
 import com.littlehouse_design.jsonparsing.Utils.CatsAndItems.Catalog;
 import com.littlehouse_design.jsonparsing.Utils.Adapters.DividerScheduleDecoration;
 import com.littlehouse_design.jsonparsing.Utils.QueryUtils;
@@ -121,7 +120,7 @@ public class ScheduleScreen extends AppCompatActivity implements LoaderManager.L
 
     public void updateUI() {
         final RecyclerView cardRecyclerView = (RecyclerView) findViewById(R.id.rv_schedule_list);
-        CatRecyclerAdapter catRecyclerAdapter = new CatRecyclerAdapter() {
+        ScheduleRecyclerAdapter catRecyclerAdapter = new ScheduleRecyclerAdapter() {
             @Override
             public Catalog getItem(int position) {
                 return new Catalog(childCodes.get(position),topCat.getCode(),childNames.get(position));
@@ -134,7 +133,7 @@ public class ScheduleScreen extends AppCompatActivity implements LoaderManager.L
             }
 
             @Override
-            public void onBindViewHolder(final CatRecyclerAdapter.MyHolder holder, final int position) {
+            public void onBindViewHolder(final ScheduleRecyclerAdapter.MyHolder holder, final int position) {
                 final Catalog catalog = new Catalog(childCodes.get(position),topCat.getCode(),childNames.get(position));
 
                 //QueryUtils.schedulesWithCats(jsonResponse,position);
@@ -145,7 +144,7 @@ public class ScheduleScreen extends AppCompatActivity implements LoaderManager.L
                 }
 
                 holder.title.setText(catalog.getName());
-                holder.pickupTime.setText("12:00 pm");
+                holder.pickupTime.setText("Next available pickup: 12:00 pm");
                 //holder.logo.setImageBitmap(QueryUtils.getBitmapFromURL("http://store" + storeNumber + ".collegestoreonline.com/webitemimages/" + storeNumber + "/catalog/" + childCodes.get(0) + "-ct.jpg)"));
                 Log.d(LOG_TAG, "http://store" + storeNumber + ".collegestoreonline.com/webitemimages/" + storeNumber + "/catalog/" + childImages.get(position) + "-ct.jpg");
                 Picasso.with(getApplicationContext()).load("http://store" + storeNumber + ".collegestoreonline.com/webitemimages/" + storeNumber + "/catalog/" + childImages.get(position) + "-ct.jpg").placeholder(R.drawable.no_image).into(holder.logo);

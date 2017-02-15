@@ -222,18 +222,10 @@ public class TCPClient {
         void messageReceived(int type, String message);
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException{
-        StringBuilder stringBuilder = new StringBuilder();
+    private class MyRunnable implements Runnable {
+        public void run() {
+            Log.d("TCPClient", "My thread is running!");
 
-        if(inputStream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String singleLine = bufferedReader.readLine();
-            while (singleLine != null) {
-                stringBuilder.append(singleLine);
-                singleLine = bufferedReader.readLine();
-            }
         }
-        return stringBuilder.toString();
     }
 }

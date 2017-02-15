@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.littlehouse_design.jsonparsing.Utils.Adapters.CatRecyclerAdapter;
+import com.littlehouse_design.jsonparsing.Utils.Adapters.ScheduleRecyclerAdapter;
 import com.littlehouse_design.jsonparsing.Utils.CatsAndItems.Catalog;
 import com.littlehouse_design.jsonparsing.Utils.LoaderManagers.CatalogLoader;
 import com.littlehouse_design.jsonparsing.Utils.Adapters.DividerScheduleDecoration;
@@ -112,7 +113,7 @@ public class SubCatList extends AppCompatActivity implements LoaderManager.Loade
 
     public void updateUI(){
         final RecyclerView cardRecyclerView = (RecyclerView) findViewById(R.id.rv_catalog_list);
-        CatRecyclerAdapter catRecyclerAdapter = new CatRecyclerAdapter() {
+        ScheduleRecyclerAdapter catRecyclerAdapter = new ScheduleRecyclerAdapter() {
             @Override
             public Catalog getItem(int position) {
                 return new Catalog(catCodes.get(position), schedule.getCode(), catNames.get(position), schedule.getLevel() + 1);
@@ -125,7 +126,7 @@ public class SubCatList extends AppCompatActivity implements LoaderManager.Loade
             }
 
             @Override
-            public void onBindViewHolder(final CatRecyclerAdapter.MyHolder holder, final int position) {
+            public void onBindViewHolder(final ScheduleRecyclerAdapter.MyHolder holder, final int position) {
                 Log.d(LOG_TAG, catNames.get(position));
                 final Catalog catalog = new Catalog(catCodes.get(position), schedule.getParentCode(), catNames.get(position));
 

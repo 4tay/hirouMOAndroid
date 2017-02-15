@@ -13,6 +13,7 @@ public class OrderItem {
     private String itemNumb;
     private int itemPrice;
     private int quantity;
+    private String subCat;
 
     public OrderItem() {
 
@@ -26,6 +27,7 @@ public class OrderItem {
     public int getId() {
         return id;
     }
+    public String getSubCat() {return subCat;}
 
     public int getItemPrice() {
         return itemPrice;
@@ -48,6 +50,10 @@ public class OrderItem {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setSubCat(String subCat) {
+        this.subCat = subCat;
     }
 
 

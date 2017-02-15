@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_dark_background"
+    android:layout_alignParentBottom="true"
     android:id="@+id/ll_item_detail_wrap">
     <ImageView
         android:layout_width="36dp"
@@ -29,28 +30,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/textColor">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/iv_frag_image"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
         <TextView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+            android:layout_weight="2"
         android:layout_height="wrap_content"
         android:id="@+id/tv_item_detail_description"
         android:textColor="@color/textColor"
         android:textSize="@dimen/text_sub_head_size"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id imperdiet turpis, non facilisis velit. Aenean eleifend mi sit amet augue rhoncus, a varius odio sodales. In eget quam eget justo elementum semper. Pellentesque eget magna elit. Nulla vitae justo felis. Nam in tortor vitae nulla mollis fringilla. Nullam sit amet velit eu tellus auctor molestie at eu ligula. Nunc tortor ipsum, rutrum eu scelerisque a, varius et libero. In laoreet auctor tortor et scelerisque. Nullam velit tortor, vestibulum vel varius vestibulum, pretium eget ligula. Aliquam non tincidunt orci. Cras id nunc massa. Proin sed ex erat. Aliquam erat volutpat. Nullam eu lorem eleifend libero interdum iaculis."/>
-    </ScrollView>
+            android:paddingLeft="8dp"
+        android:text="This is what an item description would look like."/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,6 +49,51 @@
             android:textColor="@color/textColor"
             android:textSize="@dimen/text_sub_head_size"
             tools:text="$13.98"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_item_frag_mod">
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:paddingBottom="32dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_weight="1"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/textColor"
+            android:background="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:id="@+id/tv_item_frag_add"
+            android:text="Add to Cart"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textColor="@color/textColor"
+            android:background="@color/colorPrimary"
+            android:drawableBottom="@drawable/rounded_corners"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:id="@+id/tv_item_frag_checkout"
+            android:gravity="center"
+            android:text="Checkout"/>
     </LinearLayout>
 
 </LinearLayout>

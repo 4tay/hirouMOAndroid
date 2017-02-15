@@ -98,6 +98,7 @@ public class OrdersProvider extends ContentProvider {
 
         db = ordersDBHelper.getReadableDatabase();
         Cursor cursor = liteQueryBuilder.query(db,projection,selection,selectionArgs,null,null,sortOrder);
+        //db.close();
 
         return cursor;
     }
@@ -110,17 +111,17 @@ public class OrdersProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case ORDER_ITEMS_TABLE:
                 id = db.insert(DatabaseContract.TABLE_ORDER_ITEMS,"",values);
-                db.close();
+                //db.close();
                 Log.d(LOG_TAG,"I inserted an item??");
                 return ContentUris.withAppendedId(DatabaseContract.ORDER_ITEM_URI,id);
             case PREFERENCES_TABLE:
                 id = db.insert(DatabaseContract.TABLE_PREFERENCES,"",values);
-                db.close();
+                //db.close();
                 Log.d(LOG_TAG,"I inserted a pref!");
                 return ContentUris.withAppendedId(DatabaseContract.PREFERENCES_URI,id);
             default:
                 id = db.insert(DatabaseContract.TABLE_ORDERS,"",values);
-                db.close();
+                //db.close();
                 Log.d(LOG_TAG,"I inserted an order!");
                 return ContentUris.withAppendedId(DatabaseContract.ORDER_URI,id);
         }
@@ -160,14 +161,17 @@ public class OrdersProvider extends ContentProvider {
             case ORDER_ITEMS_TABLE:
                 id = db.update(DatabaseContract.TABLE_ORDER_ITEMS,values,selection,selectionArgs);
                 Log.d(LOG_TAG,"Updated Order Items Table");
+                db.close();
                 break;
             case PREFERENCES_TABLE:
                 id= db.update(DatabaseContract.TABLE_PREFERENCES,values,selection,selectionArgs);
                 Log.d(LOG_TAG,"Updated Preferences Table");
+                db.close();
                 break;
             default:
                 id = db.update(DatabaseContract.TABLE_ORDERS,values,selection,selectionArgs);
                 Log.d(LOG_TAG,"Updated Orders Table");
+                db.close();
                 break;
         }
         return id;

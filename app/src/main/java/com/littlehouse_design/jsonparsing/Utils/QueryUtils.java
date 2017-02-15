@@ -2,6 +2,8 @@ package com.littlehouse_design.jsonparsing.Utils;
 
 import android.util.Log;
 
+import com.littlehouse_design.jsonparsing.Utils.Cart.OrderItem;
+import com.littlehouse_design.jsonparsing.Utils.Cart.OrderMod;
 import com.littlehouse_design.jsonparsing.Utils.CatsAndItems.Catalog;
 import com.littlehouse_design.jsonparsing.Utils.CatsAndItems.Item;
 
@@ -13,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -606,6 +609,70 @@ public final class QueryUtils {
         }
         return categoryCodes;
     }
+
+    public static ArrayList<OrderMod> GetModifiers(String ob) {
+
+        ArrayList<OrderMod> mods = new ArrayList<>();
+
+        try {
+            JSONObject fullOb = new JSONObject(ob);
+
+            JSONArray modifiers = fullOb.optJSONArray("modifiers");
+
+            for(int i = 0; i < modifiers.length(); i++) {
+                JSONObject singleOb = modifiers.getJSONObject(i);
+
+                JSONObject mod = singleOb.getJSONObject("mod");
+
+                Log.d(LOG_TAG,"Begin the parse!");
+
+                String modName = mod.getString("name");
+                Log.d(LOG_TAG,"Got name: " + modName);
+
+                float price = (float) mod.getDouble("price");
+
+                Log.d(LOG_TAG,"Got price: " + Integer.toString((int)price));
+
+                OrderMod singleMod = new OrderMod(modName,price);
+                mods.add(singleMod);
+            }
+
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG,"Error with Mod " + e.getMessage());
+        }
+        return mods;
+
+    }
+
+    /*public static ArrayList<OrderItem> GetSuggested(String ob) {
+
+        ArrayList<OrderItem> mods = new ArrayList<>();
+
+        try {
+            JSONObject fullOb = new JSONObject(ob);
+
+            JSONArray items = fullOb.optJSONArray("suggested");
+
+            for(int i = 0; i < items.length(); i++) {
+                JSONObject singleOb = items.getJSONObject(i);
+
+                Item singleItem = new Item();
+
+                singleItem.setItemPrice();
+
+                mods.add(singleMod);
+            }
+
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG,"Error with Mod " + e.getMessage());
+        }
+        return mods;
+
+    }*/
+
+
 
 
 }

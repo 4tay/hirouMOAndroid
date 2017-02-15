@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +50,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import static java.security.AccessController.getContext;
 
 public class CartScreen extends AppCompatActivity {
     private static final String LOG_TAG = CartScreen.class.getSimpleName();
@@ -90,6 +93,8 @@ public class CartScreen extends AppCompatActivity {
     private String nonce;
     private String paymentResponse;
     private String stringTotal;
+    private ArrayList<String> carrierSelector;
+    Spinner carrierSpinner;
 
 /*TODO
 Break ALL of these AsyncTasks up and into LoaderManagers....
@@ -145,7 +150,7 @@ Found issues with how network requests and inserts are spooled when they are all
         paymentMethods.add("Credit card");
 
         Date date = new Date();
-        SimpleDateFormat transFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat transFormat = new SimpleDateFormat("h:mm a");
 
         long pickupTime = date.getTime();
         pickupTimes = new ArrayList<>();
@@ -157,33 +162,36 @@ Found issues with how network requests and inserts are spooled when they are all
             pickupTimes.add(String.valueOf(transFormat.format(pickupTime)));
         }
 
-        //String nowTime = String.valueOf(transFormat.format(date.getTime()));
+        carrierSelector = new ArrayList<>();
+        carrierSelector.add("Att");
+        carrierSelector.add("T-Mobile");
+        carrierSelector.add("Verizon");
+        carrierSelector.add("Sprint");
+        carrierSelector.add("Virgin Mobile");
+        carrierSelector.add("Tracfone");
+        carrierSelector.add("Metro PCS");
+        carrierSelector.add("Boost Mobile");
+        carrierSelector.add("Cricket");
 
-        /*//Pickup time list
-        pickupTimes = new ArrayList<>();
-        pickupTimes.add("12:00 PM");
-        pickupTimes.add("12:10 PM");
-        pickupTimes.add("12:20 PM");
-        pickupTimes.add("12:30 PM");
-        pickupTimes.add("12:40 PM");
-        pickupTimes.add("12:50 PM");
-        pickupTimes.add("1:00 PM");
-        pickupTimes.add("1:10 PM");
-        pickupTimes.add("1:20 PM");
-        pickupTimes.add("1:30 PM");
-        pickupTimes.add("1:40 PM");
-        pickupTimes.add("1:50 PM");
-        pickupTimes.add("2:00 PM");*/
+        carrierSpinner = (Spinner) findViewById(R.id.sp_carrier_spinner);
+
+        ArrayAdapter<String> carrierAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_style,
+                carrierSelector
+        );
+        carrierSpinner.setAdapter(carrierAdapter);
+
 
         //ArrayAdapter for my payment method selector
         ArrayAdapter<String> paymentAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.spinner_style,
                 paymentMethods);
         paymentSpinner.setAdapter(paymentAdapter);
 
         //ArrayAdapter for my pickup time selector
         ArrayAdapter<String> pickupAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.spinner_style,
                 pickupTimes);
         pickupSpinner.setAdapter(pickupAdapter);
 
@@ -213,10 +221,26 @@ Found issues with how network requests and inserts are spooled when they are all
                     phoneNumberTV
                             .setError(getString(R.string.error_empty_phone));
                 }
+                else if(cart.getOrderItems().size() < 1) {
+                    if(getCurrentFocus() != null) {
+                        Snackbar.make(getCurrentFocus(), "Items are required to checkout!", Snackbar.LENGTH_INDEFINITE).show();
+                        Log.d(LOG_TAG,"No itemszzz");
+                    } else {
+                        Toast.makeText(getApplicationContext(),"Items are required to checkout!",Toast.LENGTH_LONG).show();
+                    }
+                }
                 //If the above checks out, start sending.
                 else {
                     if(paymentSpinner.getSelectedItem().toString().equals("Credit card")) {
-                        onBraintreeSubmit(getCurrentFocus());
+
+                        //Create fragment to hold my loading bar
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        LoaderFrag loaderFrag = new LoaderFrag();
+                        //Show my fragment for loading
+                        loaderFrag.show(ft, LOG_TAG);
+                        //onBraintreeSubmit(getCurrentFocus());
+
+                        new getToken().execute("");
                     }
                     else {
                         completeTrans();
@@ -225,13 +249,15 @@ Found issues with how network requests and inserts are spooled when they are all
                 }
             }
         });
-
-
-        new cartBuilder().execute();
         Log.d(LOG_TAG,"Getting token...");
-        new getToken().execute("");
+        //new getToken().execute("");
 
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        new cartBuilder().execute();
     }
     private void completeTrans() {
         //Create fragment to hold my loading bar
@@ -333,8 +359,7 @@ Found issues with how network requests and inserts are spooled when they are all
                         if (itemCursor != null) {
 
                             cart = new Cart(orderCursor, itemCursor);
-                            orderCursor.close();
-                            itemCursor.close();
+
                         } else {
                             Toast.makeText(getApplicationContext(),"Items didn't make it",Toast.LENGTH_LONG).show();
                         }
@@ -349,6 +374,11 @@ Found issues with how network requests and inserts are spooled when they are all
             }
             catch (SQLException e) {
                 Log.e(LOG_TAG, "Error building the orders for my cart: " + e.toString());
+            }
+
+            if (orderCursor != null && itemCursor != null) {
+                orderCursor.close();
+                itemCursor.close();
             }
 
             itemList = cart.getOrderItems();
@@ -368,6 +398,7 @@ Found issues with how network requests and inserts are spooled when they are all
                     }
                 }
             }
+            intSubTotal = 0;
             for(int i = 0; i < itemList.size(); i++) {
                 intSubTotal = intSubTotal + (itemList.get(i).getItemPrice() * itemList.get(i).getQuantity());
             }
@@ -451,10 +482,12 @@ Found issues with how network requests and inserts are spooled when they are all
                         Log.d(LOG_TAG,"Added this phone number: " + suggestionCursor.getString(2));
                     }
                 } while(suggestionCursor.moveToNext());
-                suggestionCursor.close();
             }
             else {
                 Log.d(LOG_TAG,"No suggestions for billing info");
+            }
+            if(suggestionCursor != null) {
+                suggestionCursor.close();
             }
             return null;
 
@@ -623,6 +656,21 @@ Found issues with how network requests and inserts are spooled when they are all
                     DatabaseContract.TableOrders.COL_ID+"=?"
                     ,new String[] {String.valueOf(cart.getOrder().getId())});
 
+            Cursor prefCursor = getContentResolver().query(DatabaseContract.PREFERENCES_URI,
+                    new String[]{DatabaseContract.TablePreferences.COL_PREF_VALUE},
+                    "CAST (" + DatabaseContract.TablePreferences.COL_PREF_TYPE + " AS TEXT) = ?",
+                    new String[] {"1"},
+                    null
+            );
+
+            if(prefCursor != null && prefCursor.moveToLast()) {
+                staticHost = prefCursor.getString(0);
+            }
+            if(prefCursor != null) {
+                prefCursor.close();
+            }
+
+
             //we create a TCPClient object and
             mTcpClient = new TCPClient(new TCPClient.OnMessageReceived() {
                 @Override
@@ -631,6 +679,8 @@ Found issues with how network requests and inserts are spooled when they are all
                     if(type == 0) {
                         //this method calls the onProgressUpdate
                         publishProgress(message);
+
+                        Log.d(LOG_TAG,message);
                     }
                     else if(type == 1) {
                         Log.d(LOG_TAG,"ERROR TRYING TO SUBMIT ORDER");
@@ -688,6 +738,7 @@ Found issues with how network requests and inserts are spooled when they are all
             fullOb.put("total",(intTotal + 1));
             fullOb.put("paymentMethod",paymentSpinner.getSelectedItem().toString());
             fullOb.put("phoneNumber",textInputPhone);
+            fullOb.put("carrier",carrierSpinner.getSelectedItem().toString());
             fullOb.put("email",textInputEmail);
             if(paymentSpinner.getSelectedItem().toString().equals("Credit card") && nonce != null && (!nonce.equals(""))) {
                fullOb.put("cardNumb",nonce);
@@ -765,8 +816,9 @@ Found issues with how network requests and inserts are spooled when they are all
         protected void onPostExecute(TCPClient result) {
             super.onPostExecute(result);
             //showTokenGot(clientToken);
+            onBraintreeSubmit(getCurrentFocus());
         }
-        }
+    }
     public class chargeNonce extends AsyncTask<String,String, TCPClient> {
         @Override
         protected TCPClient doInBackground(String... message) {

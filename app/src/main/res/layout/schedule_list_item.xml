@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/listItem"
     android:id="@+id/ll_schedule_wrap">
     <ImageView
         android:layout_width="64dp"
@@ -11,23 +12,30 @@
         android:layout_margin="@dimen/image_margin"
         android:contentDescription="Logo"
         android:id="@+id/iv_schedule_logo"/>
-    <TextView
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:text="Ninja Roll"
-        android:textSize="24sp"
-        android:textAlignment="center"
-        android:gravity="center_vertical"
-        android:layout_margin="@dimen/title_margin"
-        android:layout_weight="3"
-        android:id="@+id/tv_schedule_name"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="right"
-        tools:text="12:00 pm"
-        android:id="@+id/tv_schedule_pickup"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Ninja Roll"
+            android:textSize="28sp"
+            android:textColor="@color/textColor"
+            android:textAlignment="textStart"
+            android:layout_margin="@dimen/title_margin"
+            android:id="@+id/tv_schedule_name"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_gravity="bottom"
+            android:gravity="end"
+
+            tools:text="Next Pickup Time: 12:00 pm"
+            android:id="@+id/tv_schedule_pickup"/>
+    </LinearLayout>
 
 </LinearLayout>
