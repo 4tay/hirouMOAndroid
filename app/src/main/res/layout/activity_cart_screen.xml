@@ -29,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
+        android:hint="Name..."
         android:id="@+id/et_cart_name"
         android:textColor="@color/textColor"/>
     <AutoCompleteTextView
@@ -37,6 +38,7 @@
         android:textColor="@color/textColor"
         android:singleLine="true"
         android:id="@+id/et_cart_email"
+        android:hint="Email..."
         android:inputType="textEmailAddress"
         />
     <AutoCompleteTextView
@@ -45,6 +47,7 @@
         android:textColor="@color/textColor"
         android:singleLine="true"
         android:inputType="phone"
+        android:hint="Phone Number..."
         android:id="@+id/et_cart_phone"
         />
     <Spinner

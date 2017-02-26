@@ -46,6 +46,7 @@ public class OrderComplete extends AppCompatActivity {
         aBar.setDisplayHomeAsUpEnabled(false);
 
         TextView goHome = (TextView) findViewById(R.id.tv_complete_order_again);
+        goHome.setBackgroundResource(R.drawable.rounded_corners_3);
 
         goHome.setOnClickListener(new View.OnClickListener() {
             @Override

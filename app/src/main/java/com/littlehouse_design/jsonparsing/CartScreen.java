@@ -705,7 +705,7 @@ Found issues with how network requests and inserts are spooled when they are all
             intent.setClass(getApplicationContext(),OrderComplete.class);
 
 
-            String pickup = (pickupTime.substring(pickupTime.length() - 5,pickupTime.length()));
+            String pickup = (pickupSpinner.getSelectedItem().toString());
             intent.putExtra(PICKUP_DATE,pickup);
             intent.putExtra("total",stringTotal);
             startActivity(intent);
